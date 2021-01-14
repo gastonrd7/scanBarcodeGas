@@ -71,6 +71,8 @@ const videoConstraintType = PropTypes.shape({
   width: constrainLongType,
 });
 
+const IsMobile = () => /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
 export default class Webcam extends Component {
   static defaultProps = {
     audio: true,
@@ -82,6 +84,9 @@ export default class Webcam extends Component {
     screenshotFormat: 'image/webp',
     width: 640,
     screenshotQuality: 0.92,
+    videoConstraints : { facingMode: IsMobile() ? { exact: "environment" } : "user" }
+    // videoConstraints : { facingMode: "user" }, /* camara frontal */
+    // videoConstraints : { facingMode: { exact: "environment" } }, /* camara trasera */
   };
 
   static propTypes = {
@@ -209,6 +214,7 @@ export default class Webcam extends Component {
   }
 
   scanBarcode() {
+    debugger
     if (window.reader) {
       let canvas = document.createElement('canvas');
       canvas.width = this.props.width;
@@ -244,9 +250,11 @@ export default class Webcam extends Component {
           //this.drawResult(context, localization, results[i].BarcodeText);
         }
       }
+
       if (txts.length > 0) {
+        debugger
         this.props.onScann(txts.join(', '));
-        //alert(txts.join(', '));
+          //alert(txts.join(', '));
       }
       else {
         this.scanBarcode();
