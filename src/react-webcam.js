@@ -71,6 +71,8 @@ const videoConstraintType = PropTypes.shape({
   width: constrainLongType,
 });
 
+const IsMobile = () => /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
 export default class Webcam extends Component {
   static defaultProps = {
     audio: true,
@@ -82,6 +84,9 @@ export default class Webcam extends Component {
     screenshotFormat: 'image/webp',
     width: 640,
     screenshotQuality: 0.92,
+    videoConstraints : { facingMode: IsMobile() ? { exact: "environment" } : "user" }
+    // videoConstraints : { facingMode: "user" }, /* camara frontal */
+    // videoConstraints : { facingMode: { exact: "environment" } }, /* camara trasera */
   };
 
   static propTypes = {
